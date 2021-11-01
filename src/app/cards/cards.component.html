@@ -1,0 +1,36 @@
+<div *ngIf="flag==1">
+<ul>
+    <dd><input type="button" value= "Start Review" (click)="startReview()"></dd>
+</ul>
+
+</div>
+
+<div *ngIf="flag==2">
+<ng-container *ngFor="let c of card;let i=index">
+    <input type="button" id="cButton" value="C{{i+1}}" style="margin-right: 5px;" (click)="loadCard(i)">
+</ng-container>
+<hr>
+
+<div *ngIf="front"  id="card" style="margin-left: auto;
+margin-right: auto;width:30%; height:40%;text-align: center;display: flex;align-items: center;">
+
+<div class="card" style="height: 20rem;width: 50rem;">
+    <div class="card-body">{{card[cNo].front}}</div>
+</div>
+
+</div>
+<div *ngIf="!front"  id="card" style="margin-left: auto;
+margin-right: auto; width:30%; height: 40%;text-align: center;display: flex;align-items: center;">
+
+    <div class="card" style="height: 20rem;width: 50rem;">
+        <div class="card-body">{{card[cNo].back}}</div>
+    </div>
+    
+</div>
+<button value="prev" style="margin-left: 44rem;" (click)="loadPrev()">Previous</button>
+<button value="next" (click)="flipCard()">Flip</button>
+<button value="next" (click)="loadNext()">Next</button>
+</div>
+
+
+
