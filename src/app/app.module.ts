@@ -12,6 +12,9 @@ import { CardsComponent } from './cards/cards.component';
 import { AuthComponent } from './auth/auth.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
+import { UserComponent } from './user/user.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AuthModule } from './auth/auth.module';
 
 @NgModule({
   declarations: [
@@ -20,15 +23,16 @@ import { RegisterComponent } from './auth/register/register.component';
     HomeComponent,
     GoalComponent,
     CardsComponent,
-    AuthComponent,
-    LoginComponent,
-    RegisterComponent
+    UserComponent
   ],
   imports: [
     BrowserModule,
     CommonModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule,
+    AuthModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
