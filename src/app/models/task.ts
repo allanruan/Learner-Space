@@ -1,6 +1,6 @@
 export class Task{
     _id:number;
-    name:string;
     desc:string;
+    deadline:Date;
     priority:number;
 }

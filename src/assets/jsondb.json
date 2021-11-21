@@ -1,0 +1,21 @@
+{"card":[
+	{"front": "How do you create a new angular project?","back":"ng new <project-name>"},
+	{"front": "What angular command is used to startup angular server?","back":"ng serve"},
+	{"front": "What is the package manager used in angular?","back":"NPM"},
+	{"front": "Which file stores the dependencies in angular project?","back":"package.json"},
+	{"front": "What is MEAN stack?","back":"MongoDB, Express.js, Angular.js, Node.js"},
+	{"front": "What NPM command is used to start tracking packages in a project?","back":"npm init"},
+	{"front": "Which angular directive is used to loop an iterable?","back":"*ngFor"},
+	{"front": "What is observable?","back":"a callback promise"},
+	{"front": "What is ngModel used for?","back":"used for two way communication between component and view and form control"},
+	{"front": "What is the package used for connecting to external api?","back":"HTTPClient"},
+	{"front": "What is observable?","back":"a callback promise"}
+],
+"task":[
+	{"_id":1,"desc": "Angular Project","deadline":"10/31/2021","priority":5},
+	{"_id":2,"desc": "Python Project","deadline":"11/21/2021","priority":4},
+	{"_id":3,"desc": "Learn about javascript","deadline":"12/21/2021","priority":3},
+	{"_id":4,"desc": "Create ML model","deadline":"11/30/2021","priority":2},
+	{"_id":5,"desc": "Presentation on project","deadline":"10/31/2021","priority":4},
+	{"_id":6,"desc": "Connect project to MongoDB","deadline":"11/14/2021","priority":5}
+]}

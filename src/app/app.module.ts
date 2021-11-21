@@ -9,6 +9,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { HomeComponent } from './home/home.component';
 import { GoalComponent } from './goal/goal.component';
 import { CardsComponent } from './cards/cards.component';
+import { AuthComponent } from './auth/auth.component';
+import { LoginComponent } from './auth/login/login.component';
+import { RegisterComponent } from './auth/register/register.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +19,10 @@ import { CardsComponent } from './cards/cards.component';
     HeaderComponent,
     HomeComponent,
     GoalComponent,
-    CardsComponent
+    CardsComponent,
+    AuthComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,

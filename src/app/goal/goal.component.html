@@ -8,17 +8,27 @@
     <h2>Tasks</h2>
     <div>
         <input type="text" id="myInput" placeholder="Add to do here.."/>
+        <input type="text" id="myInput" placeholder="deadline"/>
+        <input type="text" id="myInput" placeholder="priority"/>
         <button onclick="newTodo()" >Add Todo</button>
     </div>
-    <ul  id="myList">
-        <li>Call  to  Rohit</li>
-        <li>Align Meeting  with Yuraj</li>
-        <li>Send Proposal to TCS</li>
-        <li>Prepare JS Activity</li>
-        <li>Take some rest</li>
-    </ul>
+    <hr>
+    <div>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Desc</th>
+            <th>Date</th>
+            <th>Priority</th>
+        </tr>
+        <tr *ngFor="let t of task">
+            <td>{{t._id}}</td>
+            <td>{{t.desc}}</td>
+            <td>{{t.deadline}}</td>
+            <td>{{t.priority}}</td>
 
-    <button  onclick="removeAll()">Clear Items</button>
-    <script src='myscript.js'></script>
+        </tr>
+    </table>
+    </div>
 </body>
 </html>
