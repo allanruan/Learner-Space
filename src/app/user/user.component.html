@@ -9,9 +9,9 @@
             {{ error }}
         </p>
       </div>
-    <button (click)="getUsers()">Show All</button>
-    <button (click)="getForm()">Add User</button><br>
-    <form #searchForm="ngForm" *ngIf="flag==0||flag==1" (ngSubmit)="getUserByUsername()">
+    <!-- <button (click)="getUsers()">Show All</button>
+    <button (click)="getForm()">Add User</button><br> -->
+    <!-- <form #searchForm="ngForm" *ngIf="flag==0||flag==1" (ngSubmit)="getUserByUsername()">
         <label for="searchId">Search ID</label>
         <input class="form-control" [(ngModel)]="formData.username" type="text" id="username" name="username" #username="ngModel">
         <input type="submit" value=search>
@@ -40,9 +40,9 @@
                 
             </tr>
         </tbody>
-    </table>
+    </table> -->
 
-    <!-- Company Form -->
+    <!-- User Form -->
     <form #userForm="ngForm" *ngIf="flag==2||flag==3">
         <div class="form-group">
           <div class="form-group">

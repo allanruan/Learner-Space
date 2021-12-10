@@ -1,12 +1,163 @@
-<div *ngIf="flag==1">
-<ul>
-    <dd><input type="button" value= "Start Review" (click)="startReview()"></dd>
-</ul>
+<main>
+<!-- side bar -->
+<div id="side" class="d-flex flex-column flex-shrink-0 p-3 text-dark bg-light scrollarea" style="width: 280px;">
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+      <span class="fs-4">Deck Space</span>
+    </a>
+    <hr>
+    <ul class="list-unstyled ps-0" *ngFor="let d of decks;let i=index">
+        <li class="mb-1">
+          <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" [attr.data-bs-target]="'#home-collapse'+i" (click)="selectDeck(d)" aria-expanded="true">
+            {{decks[i].deckname}}
+          </button>
+          <div class="collapse show" id="home-collapse{{i}}">
+            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small" *ngFor="let c of cards;let j =index">
+              <li><a  class="link-dark rounded" *ngIf="cards[j].deck==decks[i]._id.toString()" (click)="loadCard(j)">{{cards[j].front}}</a></li>
+            </ul>
+          </div>
+        </li>
+        <li class="border-top my-3"></li>
+      </ul>
+    <hr>
+  </div>
+  
+<!--  Main Page-->
+<div *ngIf="flag==1" style="width: 50%;">
+  
+  <ul>
+      <div *ngIf="deckSelected">
+      <h1>Selected Deck: {{deckSelected.deckname}}</h1>
+      <button type="button" class="btn btn-primary me-2" (click) = "flag=4">Add Card</button>
+      </div>
+      <button type="button" class="btn btn-primary me-2" *ngIf="!deckSelected" (click) = "flag=3">Create Deck </button>
+      <hr>
+      <dd><input type="button" value= "Start Review" (click)="startReview()"></dd>
+  </ul>
+  
+  </div>
 
+  <!-- View Card -->
+  <div *ngIf="flag==2">
+    
+    <div *ngIf="front" id="card" style="margin-left: auto;
+    margin-right: auto;width:60%; height:70%;text-align: center;display: flex;align-items: center;">
+    
+    <div class="card" style="height: 20rem;width: 50rem;">
+        <div class="card-body my-5 fs-4 fw-bold">{{cards[cNo].front}}</div>
+    </div>
+    
+    </div>
+    <div *ngIf="!front"  id="cards" style="margin-left: auto;
+    margin-right: auto; width:60%; height: 70%;text-align: center;display: flex;align-items: center;">
+    
+        <div class="card" style="height: 20rem;width: 50rem;">
+            <div class="card-body my-5 fs-4 fw-bold">{{cards[cNo].back}}</div>
+        </div>
+        
+    </div>
+    <button class="btn btn-primary me-2" value="prev" style="margin-left: 35%;" (click)="loadPrev()">Previous</button>
+    <button class="btn btn-primary me-2" value="next" (click)="flipCard()">Flip</button>
+    <button class="btn btn-primary me-2" value="next" (click)="loadNext()">Next</button>
+    </div>
+
+<!-- Add Deck/Edit Deck Interface -->
+<div *ngIf="flag==3">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="flex-column">
+        <h1 class="page-title">Create Deck</h1>
+        <form #deckForm="ngForm">
+          <div class="form-group">
+            <div *ngIf="errors.length > 0" class="alert alert-danger">
+            <ul *ngFor = "let error of errors">
+                <li>{{ error }}</li>
+            </ul>
+            </div>
+          <label for="deckname">Deck Name</label>
+           <input type="text"
+                   class="form-control"
+                   [(ngModel)] = "deckData.deckname"
+                   name="deckname"
+                   #deckname = "ngModel"
+                   required>
+          </div>
+          <div *ngIf="deckname.invalid && (deckname.dirty || deckname.touched)"
+            class="alert alert-danger">
+            <div *ngIf="deckname.errors.required">
+              Deck Name is required
+            </div>
+          </div>
+
+
+          <button 
+          (click) = "createDeck()"
+          type="submit" 
+          class="btn btn-warning"
+          [disabled] = "!deckForm.form.valid">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div *ngIf="flag==2">
-<ng-container *ngFor="let c of card;let i=index">
+<!-- Add Card/Edit Card Interface -->
+<div *ngIf="flag==4">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="flex-column">
+        <h1 class="page-title">Add Card</h1>
+        <form #cardForm="ngForm">
+          <div class="form-group">
+            <div *ngIf="errors.length > 0" class="alert alert-danger">
+            <ul *ngFor = "let error of errors">
+                <li>{{ error }}</li>
+            </ul>
+            </div>
+          <label for="front">Front</label>
+           <input type="text"
+                   class="form-control"
+                   [(ngModel)] = "cardData.front"
+                   name="front"
+                   #front = "ngModel"
+                   required>
+          </div>
+          <div *ngIf="front.invalid && (front.dirty || front.touched)"
+            class="alert alert-danger">
+            <div *ngIf="front.errors.required">
+              Card Front is required
+            </div>
+          </div>
+
+          <label for="back">Back</label>
+          <input type="text"
+                  class="form-control"
+                  [(ngModel)] = "cardData.back"
+                  name="back"
+                  #back = "ngModel"
+                  required>
+         
+         <div *ngIf="back.invalid && (back.dirty || back.touched)"
+           class="alert alert-danger">
+           <div *ngIf="front.errors.required">
+             Card Back is required
+           </div>
+         </div>
+
+          <button 
+          (click) = "createCard()"
+          type="submit" 
+          class="btn btn-warning"
+          [disabled] = "!cardForm.form.valid">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div *ngIf="flag==5">Side bar if not review mode</div> -->
+<!-- review flag -->
+<div *ngIf="flag==7">
+<ng-container *ngFor="let c of cards;let i=index">
     <input type="button" id="cButton" value="C{{i+1}}" style="margin-right: 5px;" (click)="loadCard(i)">
 </ng-container>
 <hr>
@@ -15,15 +166,15 @@
 margin-right: auto;width:30%; height:40%;text-align: center;display: flex;align-items: center;">
 
 <div class="card" style="height: 20rem;width: 50rem;">
-    <div class="card-body">{{card[cNo].front}}</div>
+    <div class="card-body">{{cards[cNo].front}}</div>
 </div>
 
 </div>
-<div *ngIf="!front"  id="card" style="margin-left: auto;
+<div *ngIf="!front"  id="cards" style="margin-left: auto;
 margin-right: auto; width:30%; height: 40%;text-align: center;display: flex;align-items: center;">
 
     <div class="card" style="height: 20rem;width: 50rem;">
-        <div class="card-body">{{card[cNo].back}}</div>
+        <div class="card-body">{{cards[cNo].back}}</div>
     </div>
     
 </div>
@@ -32,5 +183,5 @@ margin-right: auto; width:30%; height: 40%;text-align: center;display: flex;alig
 <button value="next" (click)="loadNext()">Next</button>
 </div>
 
-
+</main>
 

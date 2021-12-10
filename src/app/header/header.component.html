@@ -1,5 +1,5 @@
-<nav class="navbar navbar-light navbar-expand-lg" style="background-color: #e3f2fd;">
-  <div class="container">
+<nav class="navbar navbar-light navbar-expand-lg" style="background-color: #4d8dbb;">
+  <div class="container-fluid">
     <a routerLink="/" class="navbar-brand" routerLinkActive="active">Learner Space</a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ml-auto">
@@ -9,7 +9,7 @@
               <div class="dropdown-menu">
                 <a routerLink="/auth/login" href="#" class="dropdown-item" routerLinkActive="active">User Login</a>
                 <div class="dropdown-divider"></div>
-                <a href="./admin.html" class="dropdown-item" routerLinkActive="active">Admin Portal</a>
+                <!-- <a href="./admin.html" class="dropdown-item" routerLinkActive="active">Admin Portal</a> -->
               </div>
             
           </li>
@@ -52,7 +52,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link">
-              {{ auth.getUsername() }}
+              {{ auth.getUserid()}}
             </a>
           </li>
           <li class="nav-item">

@@ -32,6 +32,7 @@ const userSchema = new Schema({
     type:String,
     match: [/^(admin|user)$/]
   }
+  
 });
 
 userSchema.pre('save', function (next) {

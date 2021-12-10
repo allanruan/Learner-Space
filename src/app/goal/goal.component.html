@@ -1,34 +1,103 @@
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goals</title>
-</head>
-<body>
-    <h2>Tasks</h2>
-    <div>
-        <input type="text" id="myInput" placeholder="Add to do here.."/>
-        <input type="text" id="myInput" placeholder="deadline"/>
-        <input type="text" id="myInput" placeholder="priority"/>
-        <button onclick="newTodo()" >Add Todo</button>
-    </div>
-    <hr>
-    <div>
-    <table border="1">
-        <tr>
-            <th>ID</th>
-            <th>Desc</th>
-            <th>Date</th>
-            <th>Priority</th>
-        </tr>
-        <tr *ngFor="let t of task">
-            <td>{{t._id}}</td>
-            <td>{{t.desc}}</td>
-            <td>{{t.deadline}}</td>
-            <td>{{t.priority}}</td>
+<div class="container">
+    <div *ngIf="notify" class="alert alert-success">
+        {{ notify }}
+      </div>
+      <div *ngIf="errors.length > 0" class="alert alert-danger">
+        <p *ngFor = "let error of errors">
+            {{ error }}
+        </p>
+      </div>
+    <button (click)="getTask()">Show All</button>
+    <button (click)="getForm()">Add Task</button><br>
+    <form #searchForm="ngForm" *ngIf="flag==0||flag==1" (ngSubmit)="getTaskById()">
+        <label for="searchId">Search ID</label>
+        <input class="form-control" [(ngModel)]="searchId" type="text" id="searchId" name="searchId">
+        <input type="submit" value=search>
+    </form>
 
-        </tr>
+    <table class="table table-striped" *ngIf="flag==1">
+        <thead>
+            <tr>
+                <th>Task</th>
+                <th>Deadline</th>
+                <th>Priority</th>
+                <th>Reward</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let task of tasks;let rowIndex=index">
+                <td>{{task.desc}}</td>
+                <td>{{task.deadline}}</td>
+                <td>{{task.priority}}</td>
+                <td>{{task.reward}}</td>
+                <td>{{task.status}}</td>
+                <td><button (click)="deleteTaskById(task._id);getTask()">delete</button>
+                    <button (click)="updateForm(task._id,task.owner,task.desc,task.deadline,task.priority,task.reward,task.status)">update</button></td>
+                
+            </tr>
+        </tbody>
     </table>
+
+    <!-- Company Form -->
+    <form #taskForm="ngForm" *ngIf="flag==2||flag==3">
+        <div class="form-group">
+          <div class="form-group">
+            
+
+            <label for="desc">Task</label>
+            <input type="text"
+                 class="form-control"
+                 [(ngModel)] = "formData.desc"
+                 name="desc"
+                 #desc = "ngModel"
+                 required
+                 >
+            
+            <div *ngIf="desc.invalid && (desc.dirty || desc.touched)"
+                class="alert alert-danger">
+                <div *ngIf="desc.errors.required">
+                Task Desc is required
+                </div>
+             </div>
+             
+            <label for="priority">Task Priority</label>
+            <input type="text"
+                 class="form-control"
+                 [(ngModel)] = "formData.priority"
+                 name="priority"
+                 #priority = "ngModel"
+                 >
+            <label for="reward">Task Reward</label>
+            <input type="text"
+                 class="form-control"
+                 [(ngModel)] = "formData.reward"
+                 name="reward"
+                 #reward = "ngModel"
+                 >
+            <label for="status">Task Status</label>
+            <input type="text"
+                 class="form-control"
+                 [(ngModel)] = "formData.status"
+                 name="status"
+                 #status = "ngModel"
+                 >
+            
+        </div>
     </div>
-</body>
-</html>
+        <button
+        *ngIf="flag==2"
+        (click)="addTask()"
+        [disabled]="!taskForm.valid"
+        type="submit" 
+        class="btn btn-warning"
+        >Submit</button>
+        <button
+        *ngIf="flag==3"
+        (click)="updateTaskById()"
+        [disabled]="!taskForm.valid"
+        type="submit" 
+        class="btn btn-warning"
+        >Update</button>
+      </form>
+</div>
