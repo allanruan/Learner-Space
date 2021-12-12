@@ -39,7 +39,7 @@
         </tbody>
     </table>
 
-    <!-- Company Form -->
+    <!-- Task Form -->
     <form #taskForm="ngForm" *ngIf="flag==2||flag==3">
         <div class="form-group">
           <div class="form-group">
@@ -52,6 +52,7 @@
                  name="desc"
                  #desc = "ngModel"
                  required
+                 placeholder="Enter task decription"
                  >
             
             <div *ngIf="desc.invalid && (desc.dirty || desc.touched)"
@@ -62,27 +63,37 @@
              </div>
              
             <label for="priority">Task Priority</label>
-            <input type="text"
+            <input type="number"
                  class="form-control"
                  [(ngModel)] = "formData.priority"
                  name="priority"
                  #priority = "ngModel"
+                 placeholder="priority between 0-10"
+                 min="0"
+                 max="10"
                  >
             <label for="reward">Task Reward</label>
-            <input type="text"
+            <input type="number"
                  class="form-control"
                  [(ngModel)] = "formData.reward"
                  name="reward"
                  #reward = "ngModel"
+                 placeholder="Reward between 0-10"
+                 min="0"
+                 max="10"
                  >
             <label for="status">Task Status</label>
-            <input type="text"
-                 class="form-control"
+            <select class="form-control"
                  [(ngModel)] = "formData.status"
                  name="status"
                  #status = "ngModel"
+                 placeholder = "Please Select"
                  >
-            
+              <!-- <option value="--selected--" disabled selected>(Select)</option> -->
+              <option value="To Do">To-Do</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Completed">Completed</option>
+            </select>
         </div>
     </div>
         <button

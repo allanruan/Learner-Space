@@ -31,12 +31,11 @@ let corsOptions = {
 
 app.use(cors(corsOptions))
 app.use('/api/users', userRoute);
-require('./routes/companyRoute.js')(app);
 require('./routes/userAdminRoute.js')(app);
-require('./routes/productRoute.js')(app);
 require('./routes/taskRoute.js')(app);
 require('./routes/cardRoute.js')(app);
 require('./routes/deckRoute.js')(app);
+require('./routes/bookmarkRoute.js')(app);
 
 
 app.listen(PORT, () => {

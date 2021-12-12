@@ -4,6 +4,7 @@ import { Task } from '../models/task';
 import {TaskService} from './TaskService'
 import { Router,ActivatedRoute } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
+import { relativeTimeThreshold } from 'moment';
 
 @Component({
   selector: 'app-goal',
@@ -28,24 +29,28 @@ export class GoalComponent implements OnInit {
       const key3 = 'updated';
       if (params[key1] === 'success') {
         this.notify = 'Task saved';
+        setTimeout(()=>this.notify='',3000);
       }
       if (params[key2] === 'success') {
         this.notify = 'Task deleted';
+        setTimeout(()=>this.notify='',3000);
       }
       if (params[key3] === 'success') {
         this.notify = 'TasK updated';
+        setTimeout(()=>this.notify='',3000);
       }
       this.getTask();
     });
   }
 
   initForm(): void {
-    this.taskForm = this.fb.group({
-    _id: ['', [Validators.required]],
-	  desc: ['', [Validators.required]],
-	  deadline: ['', [Validators.required]]
-    });
+    // this.taskForm = this.fb.group({
+    // _id: ['', [Validators.required]],
+	  // desc: ['', [Validators.required]],
+	  // deadline: ['', [Validators.required]]
+    // });
     this.formData={owner:this.auth.getUserid()};
+    // this.formData.status = "--selected--"
   }
   isValidInput(fieldName): boolean {
     return this.taskForm.controls[fieldName].invalid &&

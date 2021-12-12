@@ -23,9 +23,11 @@ export class LoginComponent implements OnInit {
       const key2 = 'loggedOut';
       if (params[key1] === 'success') {
         this.notify = 'You have been successfully registered. Please Log in';
+        setTimeout(()=>this.notify='',3000);
       }
       if (params[key2] === 'success') {
         this.notify = 'You have been loggedout successfully';
+        setTimeout(()=>this.notify='',3000);
       }
     });
   }

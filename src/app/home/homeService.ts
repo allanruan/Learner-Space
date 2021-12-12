@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Node } from "../models/node";
+import { Bookmark } from "../models/bookmark";
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -10,30 +10,29 @@ const httpOptions = {
 @Injectable({
   providedIn: 'root'
 })
-export class NodeService {
+export class BookmarkService {
 
   // URL to web api
-  private nodeUrl = 'http://localhost:5000/api/node';
+  private bookmarkUrl = 'http://localhost:5000/api/bookmarks';
   constructor(private http: HttpClient) { }
 
-  getNodes(): Observable<Node[]> {
-    return this.http.get<Node[]>(this.nodeUrl);
+  getBookmarks(bookmark:Bookmark): Observable<Bookmark[]> {
+    return this.http.post<Bookmark[]>(this.bookmarkUrl+'/ownbookmarks',bookmark,httpOptions );
   }
 
-  getNodesById(id: any): Observable<Node> {
-    return this.http.get<Node>(`${this.nodeUrl}/${id}`);
+  getBookmarksById(id: any): Observable<Bookmark> {
+    return this.http.get<Bookmark>(`${this.bookmarkUrl}/${id}`);
+  }
+  addBookmark(bookmark: Bookmark): Observable<any> {
+    return this.http.post<any>(this.bookmarkUrl, bookmark, httpOptions);
   }
 
-//   addProduct(product: Product): Observable<any> {
-//     return this.http.post<any>(this.productUrl, product, httpOptions);
-//   }
+  updateBookmarkById(bookmark: Bookmark, id: any): Observable<Bookmark> {
+    return this.http.put<Bookmark>(`${this.bookmarkUrl}/${id}`, bookmark, httpOptions);
+  }
 
-//   updateProductById(product: Product, id: any): Observable<Product> {
-//     return this.http.put<Product>(`${this.productUrl}/${id}`, product, httpOptions);
-//   }
-
-//   deleteProductById(id: any): Observable<Product> {
-//     return this.http.delete<Product>(`${this.productUrl}/${id}`);
-//   }
+  deleteBookmarkById(id: any): Observable<Bookmark> {
+    return this.http.delete<Bookmark>(`${this.bookmarkUrl}/${id}`);
+  }
 
 }

@@ -9,59 +9,10 @@
             {{ error }}
         </p>
       </div>
-    <!-- <button (click)="getUsers()">Show All</button>
-    <button (click)="getForm()">Add User</button><br> -->
-    <!-- <form #searchForm="ngForm" *ngIf="flag==0||flag==1" (ngSubmit)="getUserByUsername()">
-        <label for="searchId">Search ID</label>
-        <input class="form-control" [(ngModel)]="formData.username" type="text" id="username" name="username" #username="ngModel">
-        <input type="submit" value=search>
-    </form>
-
-    <table class="table table-striped" *ngIf="flag==1">
-        <thead>
-            <tr>
-                <th>S.No.</th>
-                <th>User Name</th>
-                <th>email</th>
-                <th>Password</th>
-                <th>Role</th>
-                <th>Options</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let user of users;let rowIndex=index">
-                <td>{{user._id}}</td>
-                <td>{{user.username}}</td>
-                <td>{{user.email}}</td>
-                <td>{{user.password}}</td>
-                <td>{{user.role}}</td>
-                <td><button (click)="deleteUserById(user._id);getUsers()">delete</button>
-                    <button (click)="updateForm(user._id,user.username,user.email,user.password,user.role)">update</button></td>
-                
-            </tr>
-        </tbody>
-    </table> -->
-
-    <!-- User Form -->
     <form #userForm="ngForm" *ngIf="flag==2||flag==3">
         <div class="form-group">
           <div class="form-group">
               
-            <!-- <label for="_id">ID</label>
-            <input type="text"
-                 class="form-control"
-                 [(ngModel)] = "formData._id"
-                 name="_id"
-                 #_id = "ngModel"
-                 required
-                 >
-            
-            <div *ngIf="_id.invalid && (_id.dirty || _id.touched)"
-                class="alert alert-danger">
-                <div *ngIf="_id.errors.required">
-                ID is required
-                </div>
-             </div> -->
 
             <label for="username">User Name</label>
             <input type="text"

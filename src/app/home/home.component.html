@@ -17,6 +17,14 @@
 <body>
       
   <main>
+    <div *ngIf="notify" class="alert alert-success">
+      {{ notify }}
+    </div>
+    <div *ngIf="errors.length > 0" class="alert alert-danger">
+      <p *ngFor = "let error of errors">
+          {{ error }}
+      </p>
+    </div>
     <div class="container py-4">
       <header class="pb-3 mb-4 border-bottom">
         <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
@@ -26,30 +34,67 @@
   
   
       <div class="row align-items-md-stretch">
-        <div class="col-md-4">
+        <div class="col-md-4" *ngFor="let bookmark of bookmarks;let idx=index">
           <div class="h-100 p-5 text-white bg-dark rounded-3">
-            <h2>Tools</h2>
+            <h2>{{bookmark.name}}</h2>
             <ul>
-                <li>Google Scholar</li>
-                <li>Research Engine</li>
-                <li>Stack Overflow</li>
+                <li *ngFor="let src of bookmark.source"><a href="src.sourceurl">{{src.sourcename}}</a></li>
+
             </ul>
             <input type="text" placeholder="Add Tool ">
             <button class="btn btn-outline-light" type="button">Add Tool</button>
           </div>
         </div>
-        <div class="col-md-4">
+
+        <!-- New Node -->
+        <!-- <div class="col-md-4">
           <div class="h-100 p-5 bg-light border rounded-3">
-            <h2>RSS</h2>
-            <ul>
-                <li>Author blogs to follow</li>
-                <li>Related Companie's Research</li>
-                <li>News Related to field</li>
-            </ul>
-            <input type="text" placeholder="Add Feed ">
-            <button class="btn btn-outline-secondary" type="button">Add Feed</button>
+            <form #bookmarkForm="ngForm" *ngIf="true">
+              <div class="form-group">
+                <div class="form-group">
+                  
+      
+                  <h1>Add Node</h1>
+                  <input type="text"
+                       class="form-control"
+                       [(ngModel)] = "formData.name"
+                       name="nodename"
+                       #name = "ngModel"
+                       required
+                       placeholder="Enter Node Name (required)"
+                       >
+                  
+                </div>
+              </div>
+              <ul>
+                <li>First Link</li>
+                <input type="text"
+                       class="form-control"
+                       [(ngModel)] = "source.sourcename"
+                       name="sourcename"
+                       #sourcename = "ngModel"
+                       placeholder="Enter Bookmark Name"
+                       >
+                <input type="text"
+                       class="form-control"
+                       [(ngModel)] = "source.sourceurl"
+                       name="sourceurl"
+                       #sourceurl = "ngModel"
+                       placeholder="Enter Link Url"
+                       >
+              </ul>
+              <button
+              *ngIf="true"
+              (click)="addBookmark()"
+              [disabled]="!bookmarkForm.valid"
+              type="submit" 
+              class="btn btn-warning"
+              >Submit</button>
+            </form>
+            
           </div>
-          </div>
+        </div> -->
+        
         
       </div>
     </div>

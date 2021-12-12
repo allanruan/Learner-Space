@@ -1,7 +1,8 @@
 export class Node{
     // _id:number;
-    source:string;
-    pic:string;
+    name:string;
+    source:{sourcename:string,sourceurl:string}[];
+    owner:string;
     // Ldate:Date;
     // comfort:string;
 }
