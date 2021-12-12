@@ -15,8 +15,8 @@
       
     </head>
 <body>
-      
-  <main>
+  <h1 *ngIf="!auth.isAuthenticated()">Hello! Please Log In</h1>   
+  <main *ngIf="auth.isAuthenticated()">
     <div *ngIf="notify" class="alert alert-success">
       {{ notify }}
     </div>

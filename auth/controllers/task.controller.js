@@ -2,8 +2,8 @@ const Task = require('../models/task.js');
 
 
 exports.findAll = (req, res) => {
-    const { _id, owner,desc, deadline, priority, reward } = req.body;
-    Task.find({owner})
+    const { _id, owner,desc, deadline, priority, reward,status } = req.body;
+    Task.find(req.body)
         .then(tasks => {
             res.send(tasks);
         }).catch(err => {

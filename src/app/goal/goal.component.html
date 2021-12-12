@@ -7,14 +7,16 @@
             {{ error }}
         </p>
       </div>
-    <button (click)="getTask()">Show All</button>
-    <button (click)="getForm()">Add Task</button><br>
-    <form #searchForm="ngForm" *ngIf="flag==0||flag==1" (ngSubmit)="getTaskById()">
-        <label for="searchId">Search ID</label>
-        <input class="form-control" [(ngModel)]="searchId" type="text" id="searchId" name="searchId">
-        <input type="submit" value=search>
-    </form>
+    <h1>Reward: {{reward}}</h1>
 
+    <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+            <button class="ms-2 me-2" (click)="formData.status='To Do';getTask()">Show To-Do</button>
+            <button class="me-2" (click)="formData.status='In Progress';getTask()">Show In Progress</button>
+            <button class="me-2" (click)="formData.status='Completed';getTask()">Show Completed</button>
+            <button class="me-2" (click)="initForm();getTask()">Show All</button>
+            <button class="ms-2" (click)="getForm()" *ngIf="flag==1">Add Task</button>
+        
+      </nav>
     <table class="table table-striped" *ngIf="flag==1">
         <thead>
             <tr>
@@ -43,6 +45,7 @@
     <form #taskForm="ngForm" *ngIf="flag==2||flag==3">
         <div class="form-group">
           <div class="form-group">
+              <div class="fs-1">Task Form</div>
             
 
             <label for="desc">Task</label>

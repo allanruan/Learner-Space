@@ -26,10 +26,13 @@
   
   <ul>
       <div *ngIf="deckSelected">
-      <h1>Selected Deck: {{deckSelected.deckname}}</h1>
+      <span class="fs-1">Selected Deck: {{deckSelected.deckname}}</span>
+      <span class="text-primary ms-3" style="cursor: pointer;" (click)="edit=true;flag=3;deckData=deckSelected">Rename</span>
+      <span class="text-danger ms-1" style="cursor: pointer;" (click)="deleteCardByDeckId(deckSelected._id);deleteDeckById(deckSelected._id)">Delete</span>
+      <br>
       <button type="button" class="btn btn-primary me-2" (click) = "flag=4">Add Card</button>
       </div>
-      <button type="button" class="btn btn-primary me-2" *ngIf="!deckSelected" (click) = "flag=3">Create Deck </button>
+      <button type="button" class="btn btn-primary me-2" *ngIf="!deckSelected" (click) = "flag=3;edit=false">Create Deck </button>
       <hr>
       <dd><input type="button" value= "Start Review" (click)="startReview()"></dd>
   </ul>
@@ -58,6 +61,9 @@
     <button class="btn btn-primary me-2" value="prev" style="margin-left: 35%;" (click)="loadPrev()">Previous</button>
     <button class="btn btn-primary me-2" value="next" (click)="flipCard()">Flip</button>
     <button class="btn btn-primary me-2" value="next" (click)="loadNext()">Next</button>
+    <hr>
+    <button class="btn btn-warning me-2 mt-3" style="margin-left: 35%;" (click) = "edit=true;flag=4;cardData=cards[cNo]">Edit Card</button>
+    <button class="btn btn-danger me-2 mt-3" (click) = "deleteCardById(cards[cNo]._id)">Delete Card</button>
     </div>
 
 <!-- Add Deck/Edit Deck Interface -->
@@ -65,7 +71,8 @@
   <div class="container-fluid">
     <div class="row">
       <div class="flex-column">
-        <h1 class="page-title">Create Deck</h1>
+        <h1 class="page-title" *ngIf="edit==false">Create Deck</h1>
+        <h1 class="page-title" *ngIf="edit==true">Edit Deck</h1>
         <form #deckForm="ngForm">
           <div class="form-group">
             <div *ngIf="errors.length > 0" class="alert alert-danger">
@@ -87,13 +94,20 @@
               Deck Name is required
             </div>
           </div>
-
-
+          
           <button 
+          *ngIf="edit==true"
+          (click) = "updateDeckById()"
+          type="submit" 
+          class="btn btn-warning"
+          [disabled] = "!deckForm.form.valid">Submit</button>
+          <button 
+          *ngIf="edit==false"
           (click) = "createDeck()"
           type="submit" 
           class="btn btn-warning"
           [disabled] = "!deckForm.form.valid">Submit</button>
+          <button class="btn btn-warning ms-2" (click)="flag=1">Cancel</button>
         </form>
       </div>
     </div>
@@ -105,7 +119,8 @@
   <div class="container-fluid">
     <div class="row">
       <div class="flex-column">
-        <h1 class="page-title">Add Card</h1>
+        <h1 class="page-title" *ngIf="!edit">Add Card</h1>
+        <h1 class="page-title" *ngIf="edit">Edit Card</h1>
         <form #cardForm="ngForm">
           <div class="form-group">
             <div *ngIf="errors.length > 0" class="alert alert-danger">
@@ -143,11 +158,19 @@
            </div>
          </div>
 
-          <button 
-          (click) = "createCard()"
-          type="submit" 
-          class="btn btn-warning"
-          [disabled] = "!cardForm.form.valid">Submit</button>
+         <button 
+         *ngIf="edit"
+         (click) = "updateCardById()"
+         type="submit" 
+         class="btn btn-warning"
+         [disabled] = "!cardForm.form.valid">Submit</button>
+        <button 
+        *ngIf="!edit"
+        (click) = "createCard()"
+        type="submit" 
+        class="btn btn-warning"
+        [disabled] = "!cardForm.form.valid">Submit</button>
+        <button class="btn btn-warning ms-2" (click)="flag=1">Cancel</button>
         </form>
       </div>
     </div>
@@ -157,10 +180,10 @@
 <!-- <div *ngIf="flag==5">Side bar if not review mode</div> -->
 <!-- review flag -->
 <div *ngIf="flag==7">
-<ng-container *ngFor="let c of cards;let i=index">
+<!-- <ng-container *ngFor="let c of cards;let i=index">
     <input type="button" id="cButton" value="C{{i+1}}" style="margin-right: 5px;" (click)="loadCard(i)">
-</ng-container>
-<hr>
+</ng-container> -->
+<!-- <hr>
 
 <div *ngIf="front"  id="card" style="margin-left: auto;
 margin-right: auto;width:30%; height:40%;text-align: center;display: flex;align-items: center;">
@@ -180,7 +203,7 @@ margin-right: auto; width:30%; height: 40%;text-align: center;display: flex;alig
 </div>
 <button value="prev" style="margin-left: 44rem;" (click)="loadPrev()">Previous</button>
 <button value="next" (click)="flipCard()">Flip</button>
-<button value="next" (click)="loadNext()">Next</button>
+<button value="next" (click)="loadNext()">Next</button> -->
 </div>
 
 </main>

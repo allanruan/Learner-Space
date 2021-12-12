@@ -17,6 +17,7 @@ export class CardsComponent implements OnInit {
   flag:number = 1;
   cNo:number = 0;
   front:boolean = true;
+  edit:boolean=false;
   cardData: any = {};
   deckData: any = {};
   errors: any = [];
@@ -114,5 +115,59 @@ createCard():void{
         (errorResponse) => {
           this.errors.push(errorResponse.error.error);
         });
+  }
+  deleteDeckById(id):void{
+    // console.log(id);
+    this.flag=1;
+    this.cardSer.deleteDeckById(id).subscribe(() => {
+      this.deckSelected=null;
+      this.loadDecks();
+    },
+      (errorResponse) => {
+        this.errors.push(errorResponse.error.error);
+      });
+  }
+  deleteCardByDeckId(id):void{
+    // console.log(id);
+    this.flag=1;
+    this.cardSer.deleteCardByDeckId(id).subscribe(() => {
+    },
+      (errorResponse) => {
+        this.errors.push(errorResponse.error.error);
+      });
+  }
+  deleteCardById(id):void{
+    // console.log(id);
+    this.flag=1;
+    this.cardSer.deleteCardById(id).subscribe(() => {
+      this.loadCards();
+    },
+      (errorResponse) => {
+        this.errors.push(errorResponse.error.error);
+      });
+  }
+  updateDeckById():void{
+    console.log(this.deckData);
+    this.cardSer.updateDeckById(this.deckData,this.deckData._id).subscribe(() => {
+      this.flag=1;
+      this.loadDecks();
+      this.edit=false;
+    },
+      (errorResponse) => {
+        this.errors.push(errorResponse.error.error);
+    });
+    this.initDeckForm();
+  }
+  updateCardById():void{
+    console.log(this.cardData);
+    this.cardSer.updateCardById(this.cardData,this.cardData._id).subscribe(() => {
+      this.flag=1;
+      this.loadCards();
+      this.edit=false;
+    },
+      (errorResponse) => {
+        this.errors.push(errorResponse.error.error);
+    });
+    this.initCardForm();
   }
 }

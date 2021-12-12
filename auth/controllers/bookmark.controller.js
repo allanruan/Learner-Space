@@ -3,7 +3,7 @@ const Bookmark = require('../models/bookmark.js');
 
 exports.findAll = (req, res) => {
     const { owner,name } = req.body;
-    Bookmark.find({owner})
+    Bookmark.find({owner:req.body.owner})
         .then(bookmarks => {
             res.send(bookmarks);
         }).catch(err => {

@@ -45,6 +45,12 @@ exports.removeById = (req, res) => {
         res.send(card);
     })
 }
+exports.removeByDeckId = (req, res) => {
+    Card.deleteMany({deck:req.params.id}, (err, card) => {
+        if (err) throw err;
+        res.send(card);
+    })
+}
 
 exports.updateById = (req, res) => {
     Card.findByIdAndUpdate(req.params.id, req.body, (err, card) => {

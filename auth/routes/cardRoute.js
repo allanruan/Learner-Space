@@ -12,4 +12,6 @@ module.exports = function (app) {
 
     app.delete('/api/cards/:id', cards.removeById);
 
+    app.delete('/api/cards/deck/:id', cards.removeByDeckId);
+
 }

@@ -13,6 +13,7 @@ import { relativeTimeThreshold } from 'moment';
 })
 export class GoalComponent implements OnInit {
   notify:string;
+  reward:number=0;
   counter=1;
   searchId:number;
   formData:any = {};
@@ -40,15 +41,19 @@ export class GoalComponent implements OnInit {
         setTimeout(()=>this.notify='',3000);
       }
       this.getTask();
+      console.log("after init")
+      console.log(this.tasks);
+      this.reward=0;
+      setTimeout(()=>this.calcReward(),1500)
     });
   }
 
   initForm(): void {
-    // this.taskForm = this.fb.group({
-    // _id: ['', [Validators.required]],
-	  // desc: ['', [Validators.required]],
-	  // deadline: ['', [Validators.required]]
-    // });
+    this.taskForm = this.fb.group({
+    _id: ['', [Validators.required]],
+	  desc: ['', [Validators.required]],
+	  deadline: ['', [Validators.required]]
+    });
     this.formData={owner:this.auth.getUserid()};
     // this.formData.status = "--selected--"
   }
@@ -64,6 +69,7 @@ export class GoalComponent implements OnInit {
       this.tasks = result;
       console.log(this.tasks);
       this.flag=1;
+      this.initForm();
     })
   }
 
@@ -108,6 +114,7 @@ export class GoalComponent implements OnInit {
     this.taskService.updateTaskById(this.formData,this.formData._id).subscribe(() => {
       this.flag=1;
       this.router.navigate(['/goals'], { queryParams: { updated: 'success' } });
+      this.initForm();
       this.getTask();
     },
       (errorResponse) => {
@@ -121,10 +128,18 @@ export class GoalComponent implements OnInit {
     this.flag=0;
     this.taskService.deleteTaskById(id).subscribe(() => {
       this.router.navigate(['/goals'], { queryParams: { deleted: 'success' } });
+      this.initForm();
       this.getTask();
     },
       (errorResponse) => {
         this.errors.push(errorResponse.error.error);
       });
+  }
+  calcReward():void{
+    for(var task of this.tasks){
+      if(task.status=="Completed"){
+        this.reward=this.reward+task.reward;
+      }
+    }
   }
 }

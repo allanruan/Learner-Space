@@ -23,8 +23,11 @@ export class CardService {
   addCard(card: Card): Observable<any> {
     return this.http.post<any>(this.cardUrl, card,httpOptions)
   }
-  updateCardById(card:Card, id: any): Observable<Task> {
-    return this.http.put<Task>(`${this.cardUrl}/${id}`, card, httpOptions);
+  updateCardById(card:Card, id: any): Observable<Card> {
+    return this.http.put<Card>(`${this.cardUrl}/${id}`, card, httpOptions);
+  }
+  deleteCardById(id: any): Observable<Card> {
+    return this.http.delete<Card>(`${this.cardUrl}/${id}`);
   }
 
   getDecks(owner:any):Observable<Deck[]>{
@@ -35,6 +38,12 @@ export class CardService {
   }
   updateDeckById(deck:Deck, id: any): Observable<Deck> {
     return this.http.put<Deck>(`${this.deckUrl}/${id}`, deck, httpOptions);
+  }
+  deleteDeckById(id: any): Observable<Deck> {
+    return this.http.delete<Deck>(`${this.deckUrl}/${id}`);
+  }
+  deleteCardByDeckId(id: any): Observable<Card> {
+    return this.http.delete<Card>(`${this.cardUrl}/deck/${id}`);
   }
 }
 
