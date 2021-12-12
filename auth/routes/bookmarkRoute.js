@@ -12,4 +12,10 @@ module.exports = function (app) {
 
     app.delete('/api/bookmarks/:id', bookmarks.removeById);
 
+    app.put('/api/sources/:id', bookmarks.updateSourceById);
+
+    app.put('/api/sources/delete/:id', bookmarks.deleteSourceById);
+
+    app.put('/api/sources/add/:id', bookmarks.addSourceById);
+
 }

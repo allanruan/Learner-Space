@@ -7,6 +7,7 @@ export class Bookmark{
     // comfort:string;
 }
 export class Source{
+    _id:number;
     sourcename:string;
     sourceurl:string;
     constructor(sourcename: string, sourceurl: string) {

@@ -14,6 +14,7 @@ export class BookmarkService {
 
   // URL to web api
   private bookmarkUrl = 'http://localhost:5000/api/bookmarks';
+  private sourceUrl = 'http://localhost:5000/api/sources';
   constructor(private http: HttpClient) { }
 
   getBookmarks(bookmark:Bookmark): Observable<Bookmark[]> {
@@ -30,9 +31,17 @@ export class BookmarkService {
   updateBookmarkById(bookmark: Bookmark, id: any): Observable<Bookmark> {
     return this.http.put<Bookmark>(`${this.bookmarkUrl}/${id}`, bookmark, httpOptions);
   }
-
+  
+  updateSourceById(source: any, id: any): Observable<Bookmark> {
+    return this.http.put<Bookmark>(`${this.sourceUrl}/${id}`, source, httpOptions);
+  }
+  deleteSourceById(source: any, id: any): Observable<Bookmark> {
+    return this.http.put<Bookmark>(`${this.sourceUrl}/delete/${id}`, source, httpOptions);
+  }
   deleteBookmarkById(id: any): Observable<Bookmark> {
     return this.http.delete<Bookmark>(`${this.bookmarkUrl}/${id}`);
   }
-
+  addSourceById(source: any, id: any): Observable<Bookmark> {
+    return this.http.put<Bookmark>(`${this.sourceUrl}/add/${id}`, source, httpOptions);
+  }
 }

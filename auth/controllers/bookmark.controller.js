@@ -52,3 +52,31 @@ exports.updateById = (req, res) => {
         res.send(bookmark);
     })
 }
+
+exports.updateSourceById = (req, res) => {
+    Bookmark.findOneAndUpdate({_id:req.params.id, source:{$elemMatch:{id:req.body._id}}},
+        {$set:{'source.$.sourcename':req.body.sourcename,
+               'source.$.sourceurl':req.body.sourceurl}},
+        (err, bookmark) => {
+        if (err) throw err;
+        res.send(bookmark);
+    })
+}
+
+exports.deleteSourceById = (req, res) => {
+    Bookmark.findOneAndUpdate({_id:req.params.id},
+        {$pull:{source:{_id:req.body._id}}},
+        (err, bookmark) => {
+        if (err) throw err;
+        res.send(bookmark);
+    })
+}
+
+exports.addSourceById = (req, res) => {
+    Bookmark.findOneAndUpdate({_id:req.params.id},
+        {$push:{source:req.body}},
+        (err, bookmark) => {
+        if (err) throw err;
+        res.send(bookmark);
+    })
+}

@@ -39,17 +39,19 @@
             <h2>{{bookmark.name}}</h2>
             <ul>
                 <li *ngFor="let src of bookmark.source"><a href={{src.sourceurl}}>{{src.sourcename}}</a>
-                <a href='' class="ms-5">Edit link</a><a href=''class="ms-1">Delete</a>
+                <div>
+                  <span class="" style="cursor: pointer" (click)="sourceDialog(bookmark._id,src._id)">Edit link</span>
+                  <span class="mx-2" style="cursor: pointer" (click)="deleteSourceById(bookmark._id,src._id)">Delete</span>
+                </div>
                 </li>
 
             </ul>
             <br>
             <div class="my-3">
-              <input type="text" placeholder="Add Tool ">
-              <button class="btn btn-outline-light" type="button">Add</button>  
+              <button class="btn btn-outline-light" type="button" (click)="addSource(bookmark._id)" >Add link</button>  
             </div>
             <hr>
-            <button class="btn btn-outline-light mt-3" type="button" (click)="updateBookmarkForm($window.prompt(),bookmarks[idx]._id);flag=2">Edit Node</button>
+            <button mat-raised-button class="btn btn-outline-light mt-3" type="button" (click)="nodeDialog(bookmarks[idx]._id)">Edit Node</button>
             <button class="btn btn-outline-light mt-3 ms-1" type="button" (click)="deleteBookmarkById(bookmarks[idx]._id)">Delete Node</button>
           </div>
         </div>
@@ -104,9 +106,9 @@
         
       </div>
     </div>
+    
   </main>
-  
-  
-      
     </body>
   </html>
+
+  

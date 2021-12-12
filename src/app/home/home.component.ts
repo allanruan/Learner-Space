@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {BookmarkService} from '../home/homeService';
 import { AuthService } from '../auth/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Bookmark, Source } from '../models/bookmark';
-import {MatDialogModule} from '@angular/material/dialog';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA,MatDialogModule} from '@angular/material/dialog';
+
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -22,7 +24,10 @@ export class HomeComponent implements OnInit {
   bookmarks:Bookmark[];
   flag=1
 
-  constructor( private fb:FormBuilder,  public auth:AuthService,private router: Router, private route: ActivatedRoute,private bookmarkService:BookmarkService) { }
+  constructor( private fb:FormBuilder,  public auth:AuthService,
+    private router: Router, private route: 
+    ActivatedRoute,private bookmarkService:BookmarkService,
+    public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
@@ -36,7 +41,8 @@ export class HomeComponent implements OnInit {
     this.getBookmark();
   }
   initBookmarkForm(): void {
-    this.formData={owner:this.auth.getUserid(),name:'',source:this.source};
+    this.formData={owner:this.auth.getUserid(),name:''};
+    this.source={};
   }
   getBookmark():void{
     console.log("getting Bookmark");
@@ -61,7 +67,18 @@ export class HomeComponent implements OnInit {
     //   this.formData.status=status;
     //   this.flag=3;
     // }
-
+    addSourceById():void{
+      console.log(this.formData);
+      this.bookmarkService.addSourceById(this.source,this.formData._id).subscribe(() => {
+        this.flag=1;
+        this.router.navigate([''], { queryParams: { updated: 'success' } });
+        this.getBookmark();
+      },
+        (errorResponse) => {
+          this.errors.push(errorResponse.error.error);
+      });
+      this.formData={owner:this.auth.getUserid()};
+    }
     addBookmark():void{
       this.sources.push(this.source);
       this.formData.source =  this.source
@@ -87,22 +104,17 @@ export class HomeComponent implements OnInit {
     //     this.getBookmark();
     //   });
     // }
-    openDialog(): void {
-      const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-        width: '250px',
-        data: {name: this.name, animal: this.animal},
+    updateSourceById():void{
+      console.log(this.formData);
+      this.bookmarkService.updateSourceById(this.source,this.formData._id).subscribe(() => {
+        this.flag=1;
+        this.router.navigate([''], { queryParams: { updated: 'success' } });
+        this.getBookmark();
+      },
+        (errorResponse) => {
+          this.errors.push(errorResponse.error.error);
       });
-  
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed');
-        this.animal = result;
-      });
-    }
-    updateBookmarkForm(name:string,id):void{
-      this.formData.name=name;
-      this.formData._id=id;
-      // console.log(this.searchId)
-      
+      this.formData={owner:this.auth.getUserid()};
     }
     updateBookmarkById():void{
       console.log(this.formData);
@@ -128,7 +140,98 @@ export class HomeComponent implements OnInit {
           this.errors.push(errorResponse.error.error);
         });
     }
+    deleteSourceById(bid,sid):void{
+      this.source._id=sid;
+      this.formData._id=bid;
+      console.log("In Delete")
+      console.log(this.formData);
+      console.log(this.source);
+      this.bookmarkService.deleteSourceById(this.source,this.formData._id).subscribe(() => {
+        this.flag=1;
+        this.router.navigate([''], { queryParams: { updated: 'success' } });
+        this.getBookmark();
+      },
+        (errorResponse) => {
+          this.errors.push(errorResponse.error.error);
+      });
+      this.formData={owner:this.auth.getUserid()};
+    }
+    addSource(bid): void {
+      const dialogRef = this.dialog.open(SourceDialog, {
+        width: '250px',
+        data: {_id:this.source.id,sourcename:this.source.sourcename,sourceurl:this.source.sourceurl}
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+        this.source = result;
+        this.formData._id=bid;
+        console.log(this.formData._id);
+        console.log(this.source);
+        this.addSourceById();
+      });
+    }
+  
+    nodeDialog(id): void {
+      const dialogRef = this.dialog.open(NodeDialog, {
+        width: '250px',
+        data: {name: this.formData.name},
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+        this.formData.name = result;
+        this.formData._id = id;
+        this.updateBookmarkById();
+      });
+    }
+    sourceDialog(bid,sid): void {
+      this.source._id=sid;
+      const dialogRef = this.dialog.open(SourceDialog, {
+        width: '250px',
+        data: {_id:this.source.id,sourcename:this.source.sourcename,sourceurl:this.source.sourceurl}
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+        this.source = result;
+        this.formData._id=bid;
+        console.log(this.formData._id);
+        console.log(this.source);
+        this.updateSourceById();
+        // this.formData._id = id;
+        // this.updateBookmarkById();
+      });
+    }
   }
 
+  @Component({
+    selector: 'node-Dialog',
+    templateUrl: './nodeDialog.html',
+  })
+  export class NodeDialog {
+    constructor(
+      public dialogRef: MatDialogRef<NodeDialog>,
+      @Inject(MAT_DIALOG_DATA) public data: Bookmark,
+    ) {}
+  
+    onNoClick(): void {
+      this.dialogRef.close();
+    }
+  }
+  @Component({
+    selector: 'source-Dialog',
+    templateUrl: './sourceDialog.html',
+  })
+  export class SourceDialog {
+    constructor(
+      public dialogRef: MatDialogRef<SourceDialog>,
+      @Inject(MAT_DIALOG_DATA) public data: Source,
+    ) {}
+  
+    onNoClick(): void {
+      this.dialogRef.close();
+    }
+  }
 
 
