@@ -9,7 +9,7 @@
       </div>
     <h1>Reward: {{reward}}</h1>
 
-    <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+    <nav class="navbar navbar-light" *ngIf="flag==1" style="background-color: #e3f2fd;">
             <button class="ms-2 me-2" (click)="formData.status='To Do';getTask()">Show To-Do</button>
             <button class="me-2" (click)="formData.status='In Progress';getTask()">Show In Progress</button>
             <button class="me-2" (click)="formData.status='Completed';getTask()">Show Completed</button>
@@ -114,4 +114,98 @@
         class="btn btn-warning"
         >Update</button>
       </form>
+
+
+ <!-- Reward -->
+
+<nav class="navbar navbar-light" *ngIf="flag==1" style="background-color: #e3f2fd;">
+        <button class="ms-2 me-2" (click)="rewardData.status='Open';getReward()">Show Open</button>
+        <button class="me-2" (click)="rewardData.status='Redeemed';getReward()">Redeemed</button>
+        <button class="me-2" (click)="initRewardForm();getReward()">Show All</button>
+        <button class="ms-2" (click)="getRewardForm()" *ngIf="flag==1">Add Reward</button>
+    
+  </nav>
+<table class="table table-striped" *ngIf="flag==1">
+    <thead>
+        <tr>
+            <th>Reward</th>
+            <th>Cost</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let rwd of rewards;let rowIndex=index">
+            <td>{{rwd.desc}}</td>
+            <td>{{rwd.cost}}</td>
+            <td>{{rwd.status}}</td>
+            <td><button (click)="deleteRewardById(rwd._id);getReward()">delete</button>
+                <button (click)="updateRewardForm(rwd._id,rwd.owner,rwd.desc,rwd.cost,rwd.status)">update</button></td>
+            
+        </tr>
+    </tbody>
+</table>
+
+<!-- Reward Form -->
+<form #rewardForm="ngForm" *ngIf="flag==4||flag==5">
+    <div class="form-group">
+      <div class="form-group">
+          <div class="fs-1">Reward Form</div>
+        
+
+        <label for="desc">Reward</label>
+        <input type="text"
+             class="form-control"
+             [(ngModel)] = "rewardData.desc"
+             name="desc"
+             #desc = "ngModel"
+             required
+             placeholder="Enter reward decription"
+             >
+        
+        <div *ngIf="desc.invalid && (desc.dirty || desc.touched)"
+            class="alert alert-danger">
+            <div *ngIf="desc.errors.required">
+            Reward Desc is required
+            </div>
+         </div>
+         
+        <label for="cost">Reward Cost</label>
+        <input type="number"
+             class="form-control"
+             [(ngModel)] = "rewardData.cost"
+             name="priority"
+             #cost = "ngModel"
+             placeholder="cost between 0-10"
+             min="0"
+             max="10"
+             >
+
+        <label for="status">Reward Status</label>
+        <select class="form-control"
+             [(ngModel)] = "rewardData.status"
+             name="status"
+             #status = "ngModel"
+             placeholder = "Please Select"
+             >
+          <!-- <option value="--selected--" disabled selected>(Select)</option> -->
+          <option value="Open">Open</option>
+          <option value="Redeemed">Redeemed</option>
+        </select>
+    </div>
+</div>
+    <button
+    *ngIf="flag==4"
+    (click)="addReward()"
+    [disabled]="!rewardForm.valid"
+    type="submit" 
+    class="btn btn-warning"
+    >Submit</button>
+    <button
+    *ngIf="flag==5"
+    (click)="updateRewardById()"
+    [disabled]="!rewardForm.valid"
+    type="submit" 
+    class="btn btn-warning"
+    >Update</button>
+  </form>
 </div>

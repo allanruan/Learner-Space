@@ -36,6 +36,7 @@ require('./routes/taskRoute.js')(app);
 require('./routes/cardRoute.js')(app);
 require('./routes/deckRoute.js')(app);
 require('./routes/bookmarkRoute.js')(app);
+require('./routes/rewardRoute.js')(app);
 
 
 app.listen(PORT, () => {

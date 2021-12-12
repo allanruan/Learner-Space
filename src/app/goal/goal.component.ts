@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Task } from '../models/task';
-import {TaskService} from './TaskService'
+import { Reward } from '../models/reward';
+import {TaskService} from './TaskService';
 import { Router,ActivatedRoute } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { relativeTimeThreshold } from 'moment';
@@ -17,13 +18,18 @@ export class GoalComponent implements OnInit {
   counter=1;
   searchId:number;
   formData:any = {};
+  rewardData:any={};
   taskForm:FormGroup;
+  rewardForm:FormGroup;
   tasks:Task[];
+  rewards:Reward[];
   errors:any = [];
+  
   constructor(private taskService:TaskService, private fb:FormBuilder, private router:Router,private route:ActivatedRoute,public auth:AuthService) { }
   flag:number=0;
   ngOnInit(): void {
     this.initForm();
+    this.initRewardForm();
     this.route.queryParams.subscribe((params) => {
       const key1 = 'saved';
       const key2 = 'deleted';
@@ -41,6 +47,7 @@ export class GoalComponent implements OnInit {
         setTimeout(()=>this.notify='',3000);
       }
       this.getTask();
+      this.getReward();
       console.log("after init")
       console.log(this.tasks);
       this.reward=0;
@@ -57,9 +64,9 @@ export class GoalComponent implements OnInit {
     this.formData={owner:this.auth.getUserid()};
     // this.formData.status = "--selected--"
   }
-  isValidInput(fieldName): boolean {
-    return this.taskForm.controls[fieldName].invalid &&
-      (this.taskForm.controls[fieldName].dirty || this.taskForm.controls[fieldName].touched);
+  isValidReward(fieldName): boolean {
+    return this.rewardForm.controls[fieldName].invalid &&
+      (this.rewardForm.controls[fieldName].dirty || this.rewardForm.controls[fieldName].touched);
   }
 
   getTask():void{
@@ -94,6 +101,7 @@ export class GoalComponent implements OnInit {
         this.flag=1;
         this.router.navigate(['/goals'], { queryParams: { saved: 'success' } });
         this.getTask();
+        window.location.reload();
       },
         (errorResponse) => {
           this.errors.push(errorResponse.error.error);
@@ -116,6 +124,7 @@ export class GoalComponent implements OnInit {
       this.router.navigate(['/goals'], { queryParams: { updated: 'success' } });
       this.initForm();
       this.getTask();
+      window.location.reload();
     },
       (errorResponse) => {
         this.errors.push(errorResponse.error.error);
@@ -130,6 +139,7 @@ export class GoalComponent implements OnInit {
       this.router.navigate(['/goals'], { queryParams: { deleted: 'success' } });
       this.initForm();
       this.getTask();
+      window.location.reload();
     },
       (errorResponse) => {
         this.errors.push(errorResponse.error.error);
@@ -141,5 +151,90 @@ export class GoalComponent implements OnInit {
         this.reward=this.reward+task.reward;
       }
     }
+    for(var rwd of this.rewards){
+      if(rwd.status=="Redeemed"){
+        this.reward=this.reward-rwd.cost;
+      }
+    }
+  }
+
+  //Reward
+  initRewardForm(): void {
+    this.rewardForm = this.fb.group({
+    _id: ['', [Validators.required]],
+	  desc: ['', [Validators.required]],
+	  cost: ['', [Validators.required]]
+    });
+    this.rewardData={owner:this.auth.getUserid()};
+    // this.formData.status = "--selected--"
+  }
+  isValidInput(fieldName): boolean {
+    return this.taskForm.controls[fieldName].invalid &&
+      (this.taskForm.controls[fieldName].dirty || this.taskForm.controls[fieldName].touched);
+  }
+  getReward():void{
+    console.log("getting Reward");
+    console.log(this.rewardData);
+    this.taskService.getRewards(this.rewardData).subscribe(result => {
+      this.rewards = result;
+      console.log(this.rewards);
+      this.flag=1;
+      this.initRewardForm();
+    })
+  }
+
+  getRewardForm():void{
+    this.flag=4;
+  }
+  updateRewardForm(id,owner,desc, cost, status){
+    this.rewardData._id=id;
+    this.rewardData.owner=owner;
+  	this.rewardData.desc=desc;
+    this.rewardData.cost=cost;
+    this.rewardData.status=status;
+    this.flag=5;
+  }
+  addReward():void{
+    console.log(this.rewardData)
+    this.taskService.addReward(this.rewardData)
+      .subscribe(() => {
+        this.flag=1;
+        this.router.navigate(['/goals'], { queryParams: { saved: 'success' } });
+        this.getReward();
+        window.location.reload();
+      },
+        (errorResponse) => {
+          this.errors.push(errorResponse.error.error);
+		});
+    this.rewardData={owner:this.auth.getUserid()};
+    }
+  updateRewardById():void{
+    console.log(this.rewardData);
+    console.log(this.rewardData._id);
+    this.taskService.updateRewardById(this.rewardData,this.rewardData._id).subscribe(() => {
+      this.flag=1;
+      this.router.navigate(['/goals'], { queryParams: { updated: 'success' } });
+      this.initRewardForm();
+      this.getReward();
+      window.location.reload();
+    },
+      (errorResponse) => {
+        this.errors.push(errorResponse.error.error);
+	  });
+    this.rewardData={owner:this.auth.getUserid()};
+  }
+
+  deleteRewardById(id):void{
+    // console.log(id);
+    this.flag=0;
+    this.taskService.deleteRewardById(id).subscribe(() => {
+      this.router.navigate(['/goals'], { queryParams: { deleted: 'success' } });
+      this.initRewardForm();
+      this.getReward();
+      window.location.reload();
+    },
+      (errorResponse) => {
+        this.errors.push(errorResponse.error.error);
+      });
   }
 }
