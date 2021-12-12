@@ -4,7 +4,7 @@ import {BookmarkService} from '../home/homeService';
 import { AuthService } from '../auth/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Bookmark, Source } from '../models/bookmark';
-
+import {MatDialogModule} from '@angular/material/dialog';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -38,15 +38,15 @@ export class HomeComponent implements OnInit {
   initBookmarkForm(): void {
     this.formData={owner:this.auth.getUserid(),name:'',source:this.source};
   }
-    getBookmark():void{
-      console.log("getting Bookmark");
-      console.log(this.formData);
-      this.bookmarkService.getBookmarks(this.formData).subscribe(result => {
-        this.bookmarks = result;
-        console.log(this.bookmarks);
-        this.flag=1;
-      })
-    }
+  getBookmark():void{
+    console.log("getting Bookmark");
+    console.log(this.formData);
+    this.bookmarkService.getBookmarks(this.formData).subscribe(result => {
+      this.bookmarks = result;
+      console.log(this.bookmarks);
+      this.flag=1;
+    })
+  }
   
     // getForm():void{
     //   this.flag=2;
@@ -78,14 +78,31 @@ export class HomeComponent implements OnInit {
       });
       this.formData={owner:this.auth.getUserid()};
       }
-    getBookmarkById():void{
-      // console.log(this.searchId)
-      this.bookmarkService.getBookmarksById(this.searchId).subscribe(result => {
-        this.bookmarks = [result];
-        console.log(this.bookmarks);
-        this.flag=1;
-        this.getBookmark();
+    // getBookmarkById():void{
+    //   // console.log(this.searchId)
+    //   this.bookmarkService.getBookmarksById(this.searchId).subscribe(result => {
+    //     this.bookmarks = [result];
+    //     console.log(this.bookmarks);
+    //     this.flag=1;
+    //     this.getBookmark();
+    //   });
+    // }
+    openDialog(): void {
+      const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
+        width: '250px',
+        data: {name: this.name, animal: this.animal},
       });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+        this.animal = result;
+      });
+    }
+    updateBookmarkForm(name:string,id):void{
+      this.formData.name=name;
+      this.formData._id=id;
+      // console.log(this.searchId)
+      
     }
     updateBookmarkById():void{
       console.log(this.formData);

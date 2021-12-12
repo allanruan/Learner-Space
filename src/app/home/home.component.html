@@ -34,20 +34,26 @@
   
   
       <div class="row align-items-md-stretch">
-        <div class="col-md-4" *ngFor="let bookmark of bookmarks;let idx=index">
+        <div class="col-md-4 my-2" *ngFor="let bookmark of bookmarks;let idx=index">
           <div class="h-100 p-5 text-white bg-dark rounded-3">
             <h2>{{bookmark.name}}</h2>
             <ul>
-                <li *ngFor="let src of bookmark.source"><a href="src.sourceurl">{{src.sourcename}}</a></li>
+                <li *ngFor="let src of bookmark.source"><a href={{src.sourceurl}}>{{src.sourcename}}</a>
+                <a href='' class="ms-5">Edit link</a><a href=''class="ms-1">Delete</a>
+                </li>
 
             </ul>
-            <input type="text" placeholder="Add Tool ">
-            <button class="btn btn-outline-light" type="button">Add Tool</button>
+            <br>
+            <div class="my-3">
+              <input type="text" placeholder="Add Tool ">
+              <button class="btn btn-outline-light" type="button">Add</button>  
+            </div>
+            <hr>
+            <button class="btn btn-outline-light mt-3" type="button" (click)="updateBookmarkForm($window.prompt(),bookmarks[idx]._id);flag=2">Edit Node</button>
+            <button class="btn btn-outline-light mt-3 ms-1" type="button" (click)="deleteBookmarkById(bookmarks[idx]._id)">Delete Node</button>
           </div>
         </div>
-
-        <!-- New Node -->
-        <!-- <div class="col-md-4">
+        <div class="col-md-4 my-2">
           <div class="h-100 p-5 bg-light border rounded-3">
             <form #bookmarkForm="ngForm" *ngIf="true">
               <div class="form-group">
@@ -93,7 +99,7 @@
             </form>
             
           </div>
-        </div> -->
+        </div>
         
         
       </div>
